@@ -38,6 +38,13 @@ const char* Column::getName() const noexcept
     return sqlite3_column_name(mStmtPtr, mIndex);
 }
 
+// Return the named assigned to this result column (potentially aliased)
+std::string Column::getNameString() const noexcept
+{
+    const char* name = sqlite3_column_name(mStmtPtr, mIndex);
+    return std::string(data, sqlite3_column_bytes(mStmtPtr, mIndex));
+}
+
 #ifdef SQLITE_ENABLE_COLUMN_METADATA
 // Return the name of the table column that is the origin of this result column
 const char* Column::getOriginName() const noexcept
